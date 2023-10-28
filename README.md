@@ -50,3 +50,26 @@ However, this method has its challenges:
 Given the relative ease, efficiency, and the scalability of the Machine Learning approach, our **ReversibleTSNE** primarily uses this method to approximate the inverse mapping. It offers a good balance between accuracy and computational feasibility, especially when dealing with high-dimensional datasets.
 
 By doing so, users can not only visualize data in reduced dimensions but also have a way to trace back to the original space, providing a much-needed bridge between data visualization and interpretation.
+
+### Usage
+
+Code is written for compatibility with sklearn API, the only difference is that a subset of the original data is required for producing the inverse mapping.  Ideally, this subset should include varried samples from the original data. It is possible to completely remove this requirement and train a ML model in the fit method (this is seen as a future improvement).
+
+### Performance
+
+Reversing the mapping requires training a multi-output regression model, in addition to the t-SNE model and hence this process is slower than PCA/Kernel-PCA. However if the application requires very aggressive dimensionality reduction (hence aggressive compression), the output quality of this method is better than PCA / Kernel-PCA. Currently the "exact" method of t-SNE in sklearn is very slow, hence the n_components of t-SNE is limited in this case to 3 with the "barnes_hut" method.
+
+### Examples
+
+Some examples of how to use this method are in
+
+- ```plot_digits_denoising.py```
+- ```plot_digits_kde_sampling.py```
+
+both of which are adapted from sklearn eamples.
+
+### Sample Results
+
+**KDE SAMPLING**
+
+![KDE sampling using reversible-tSNE](images/reversibleTSNE_KDE.png)
